@@ -4,22 +4,67 @@
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>    
-</head>
-<body>
-
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script
         src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
+</head>
+<body>
+        <table class="js-table-contacts">
+            <thead>
+                <th>Contact name</th>
+                <th>Remove</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <form class="js-add-contact">
+            <input type="text" class="js-contact-name" name="name" required/>
+            <button type="submit">Add</button>
+        </form>
+    
     <script>
-        
         $(function(){
-            let apiUrl = 'http://localhost:5000'
-            document.write('Testing server connection...')
-            $.get(apiUrl + '/parking')
-                .done(() => document.write('...OK'))
-                .fail(() => document.write('...FAILED'))
+
+            $addContact = $(".js-add-contact");
+            $tableContacts = $(".js-table-contacts tbody");
+
+            let data = [
+                {id: 1, name: 'Damir'},
+                {id: 2, name: 'Mauricio'},
+                {id: 3, name: 'Juan'},
+            ];
+
+            function showContacts(){
+                console.log('data', data);
+                $tableContacts.empty();
+                data.forEach(function(e){
+                    let row = `<tr><td>${e.name}</td>`;
+                    row += `<td><a href="#" class="js-remove-contact" data-id="${e.id}">remove</a></td></tr>`
+                    $tableContacts.append(row);
+                });
+            }
+
+            function removeContact(e) {
+                let id = $(this).data('id');
+                data = data.filter((obj) => obj.id !== id);
+
+                showContacts();
+            }
+
+            $addContact.on('submit', function(e){
+                e.preventDefault();
+                let name = $(this).find('.js-contact-name').val()
+                data.push({
+                    id: data.length + 1,
+                    name: name
+                });
+                showContacts();
+            });
+
+            $tableContacts.on('click', '.js-remove-contact', removeContact);
+            showContacts();
         })
     </script>
 </body>
