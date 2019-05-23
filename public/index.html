@@ -11,7 +11,10 @@
         crossorigin="anonymous"></script>
 </head>
 <body>
-        <table class="js-table-contacts">
+
+    <div data-controller="Contact"> </div>
+
+        <!-- <table class="js-table-contacts">
             <thead>
                 <th>Contact name</th>
                 <th>Remove</th>
@@ -22,10 +25,10 @@
         <form class="js-add-contact">
             <input type="text" class="js-contact-name" name="name" required/>
             <button type="submit">Add</button>
-        </form>
+        </form> -->
     
     <script>
-        $(function(){
+        /*$(function(){
 
             $addContact = $(".js-add-contact");
             $tableContacts = $(".js-table-contacts tbody");
@@ -40,7 +43,7 @@
                 console.log('data', data);
                 $tableContacts.empty();
                 data.forEach(function(e){
-                    let row = `<tr><td>${e.name}</td>`;
+                    let row = `<tr><td>${e.name}</td>   `;
                     row += `<td><a href="#" class="js-remove-contact" data-id="${e.id}">remove</a></td></tr>`
                     $tableContacts.append(row);
                 });
@@ -65,7 +68,10 @@
 
             $tableContacts.on('click', '.js-remove-contact', removeContact);
             showContacts();
-        })
+        })*/
     </script>
+
+    <script src="js/ContactView.js"></script>
+    <script src="js/ContactController.js"></script>
 </body>
 </html>
