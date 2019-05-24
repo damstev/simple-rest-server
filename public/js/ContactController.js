@@ -1,23 +1,45 @@
-$(function(){
-    function ContactController(el) {
+function ContactController(el, view, model){
+    this.$el = $(el);
+    this.view = view;
+    this.model = model;
 
-        this.$el = $(el);
-        this.init = function(){
-            console.log(this.$el);
-
-            this.bindEvents();
-            ContactVeiew.render(this.$el, []);
-        }
-
-        this.bindEvents = function(){
-
-        }
-
-        this.setView
+    this.init = function(){
+        this.view.renderTable(this.$el);
+        this.view.renderForm(this.$el);
+        this.bindEvents();
+        this.showContacts();
     }
 
-    $("[data-controller='Contact']").each(function(){
-        let controller = new ContactController(this);
-        controller.init();
-    })
+    this.bindEvents = function() {
+        this.$el.on('submit', '.js-add-contact', this.createContact.bind(this))
+        this.$el.on('click', '.js-remove-contact', this.deleteContact.bind(this))
+    }
+
+    this.createContact = function(e){
+        e.preventDefault(); 
+        let name = this.$el.find('.js-contact-name').val();
+        this.model.create(name);
+        this.showContacts();
+    }
+
+    this.deleteContact = function(e){
+        e.preventDefault(); 
+        let id = $(e.target).data('id');
+        this.model.remove(id);
+        this.showContacts();
+    }
+
+    this.showContacts = function(){
+        let data = this.model.getAll();
+        this.view.renderTableContent(this.$el, data);
+    }
+}
+
+$(function(){
+    $("[data-controller='Contact']").each(function() {
+        let view = new ContactView();
+        let model = new ContactModel();
+        let ctrl = new ContactController(this, view, model);
+        ctrl.init();
+    });
 });
